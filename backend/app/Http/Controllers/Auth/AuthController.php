@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginPostResquest;
 use App\Http\Requests\Auth\RegisterPostResquest;
-use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -30,7 +31,7 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'User created successfully',
             'data' => $user
-        ], Response::HTTP_OK);
+        ]);
     }
 
     /**
@@ -41,7 +42,9 @@ class AuthController extends Controller
     public function login(LoginPostResquest $request)
     {
 
-        if (!$token = auth()->attempt($request)) {
+        $credentials = request(['email', 'password']);
+
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 

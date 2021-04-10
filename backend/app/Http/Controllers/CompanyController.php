@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\eRespCode;
 use App\Http\Requests\companies\CreateOrUpdateCompany;
 use App\Http\Resources\Companies\Base\CompaniesResources;
+use App\Http\Resources\Companies\Base\CompaniesResourcesCollection;
 use App\Http\Resources\Companies\Pagination\CompaniesPaginationResourceCollection;
 use App\Models\Company;
 
@@ -31,6 +32,18 @@ class CompanyController extends ResponseController
         $companies = Company::paginate();
 
         return $this->resp->ok(eRespCode::C_LISTED_200_00, new CompaniesPaginationResourceCollection($companies));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllCompanies()
+    {
+        $companies = Company::all();
+
+        return $this->resp->ok(eRespCode::C_LISTED_200_00, new CompaniesResourcesCollection($companies));
     }
 
     /**

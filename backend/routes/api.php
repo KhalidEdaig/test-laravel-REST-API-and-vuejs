@@ -26,4 +26,5 @@ Route::group([
 ], function ($router) {
     Route::apiResource('companies', CompanyController::class);
     Route::apiResource('employees', EmployeeController::class);
+    Route::post("companies/all", [CompanyController::class, "getAllCompanies"]);
 });

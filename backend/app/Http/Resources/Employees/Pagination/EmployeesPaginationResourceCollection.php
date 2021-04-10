@@ -16,7 +16,7 @@ class EmployeesPaginationResourceCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'Employees' => EmployeesResources::collection($this->collection),
+            'employees' => EmployeesResources::collection($this->collection),
             'meta' => [
                 'total' => $this->total(),
                 'count' => $this->count(),

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\companies;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginPostResquest extends FormRequest
+class CreateOrUpdateCompany extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,9 @@ class LoginPostResquest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|min:8'
+            'name' => 'required|min:3|max:70',
+            'email' => 'required|email|unique:companies',
+            //'file' => 'required|mimes:jpeg,bmp,png|size:10000'
         ];
     }
 }

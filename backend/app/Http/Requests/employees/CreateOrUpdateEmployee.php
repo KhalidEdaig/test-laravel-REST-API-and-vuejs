@@ -24,11 +24,11 @@ class CreateOrUpdateEmployee extends FormRequest
     public function rules()
     {
         return [
-            'firtsname' => 'required|min:3|max:70',
-            'lastsname' => 'required|min:3|max:70',
+            'firstname' => 'required|min:3|max:70',
+            'lastname' => 'required|min:3|max:70',
             'email' => 'required|email|unique:employees',
             'phone' => 'required|min:10',
-            'entreprise_id' => 'required|integer|exists:entreprises,id',
+            'company_id' => 'required|integer|exists:companies,id',
         ];
     }
 }

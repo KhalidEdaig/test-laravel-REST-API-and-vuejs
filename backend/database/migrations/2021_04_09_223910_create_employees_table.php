@@ -19,8 +19,8 @@ class CreateEmployeesTable extends Migration
             $table->string('lastname', 70);
             $table->string('email')->uniqid();
             $table->string('phone');
-            $table->unsignedBigInteger('entreprise_id');
-            $table->foreign('entreprise_id')->references('id')->on('entreprises')->onDelete('cascade');
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->timestamps();
         });
     }

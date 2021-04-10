@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Enums\eRespCode;
+use App\Http\Controllers\ResponseController;
+use App\Http\Requests\Auth\changePasswordRequest;
 use App\Http\Requests\Auth\LoginPostResquest;
-use App\Http\Requests\Auth\RegisterPostResquest;
+use App\Http\Resources\User\UsersResources;
 use App\Models\User;
 
-class AuthController extends Controller
+class AuthController extends ResponseController
 {
     /**
      * Create a new AuthController instance.
@@ -16,10 +18,11 @@ class AuthController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    public function register(RegisterPostResquest $request)
+    /* public function register(RegisterPostResquest $request)
     {
 
         //Request is valid, create new user
@@ -31,7 +34,7 @@ class AuthController extends Controller
             'message' => 'User created successfully',
             'data' => $user
         ]);
-    }
+    } */
 
     /**
      * Get a JWT via given credentials.
@@ -41,10 +44,8 @@ class AuthController extends Controller
     public function login(LoginPostResquest $request)
     {
 
-        $credentials = request(['email', 'password']);
-
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$token = auth()->attempt($request->all())) {
+            return $this->resp->guessResponse(eRespCode::_403_NOT_AUTHORIZED);
         }
 
         return $this->respondWithToken($token);
@@ -57,7 +58,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return $this->resp->ok(eRespCode::U_GET_200_03, new UsersResources(auth()->user()));
     }
 
     /**
@@ -96,5 +97,20 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
+    }
+
+    public function changePassword(changePasswordRequest $request)
+    {
+        $user = User::find(auth()->user()->id);
+
+        if (!Hash::check($request->old_password, $user->password))
+            return $this->resp->guessResponse(eRespCode::_403_NOT_AUTHORIZED);
+
+        $user->password = $request->password;
+
+        if ($user->save())
+            return $this->resp->ok(eRespCode::_200_OK);
+
+        return $this->resp->guessResponse(eRespCode::_500_INTERNAL_ERROR);
     }
 }

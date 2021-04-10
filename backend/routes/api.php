@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\EntrepriseController;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -24,6 +24,6 @@ Route::group([
     'middleware' => 'api'
 
 ], function ($router) {
-    Route::apiResource('entreprises', EntrepriseController::class);
-    Route::apiResource('enployees', EmployeeController::class);
+    Route::apiResource('companies', CompanyController::class);
+    Route::apiResource('employees', EmployeeController::class);
 });

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\entreprice;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateOrUpdateEntreprise extends FormRequest
+class changePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class CreateOrUpdateEntreprise extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:3|max:70',
-            'email' => 'required|email|unique:entreprises',
-            //'file' => 'required|mimes:jpeg,bmp,png|size:10000'
+            'old_password' => 'required|string',
+            'password' => 'required|string|confirmed|min:6|max:20',
+            'password_confirmation' => 'required|string',
         ];
     }
 }

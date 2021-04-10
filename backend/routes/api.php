@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EntrepriseController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -16,4 +17,13 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
+});
+
+Route::group([
+
+    'middleware' => 'api'
+
+], function ($router) {
+    Route::apiResource('entreprises', EntrepriseController::class);
+    Route::apiResource('enployees', EmployeeController::class);
 });

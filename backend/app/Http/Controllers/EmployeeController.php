@@ -2,22 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\entreprice\CreateOrUpdateEntreprise;
-use App\Models\Entreprise;
+use App\Http\Requests\employees\CreateOrUpdateEmployee;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
-class EntrepriseController extends Controller
+class EmployeeController extends Controller
 {
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -25,12 +15,12 @@ class EntrepriseController extends Controller
      */
     public function index()
     {
-        $entreprises = Entreprise::all();
+        $employees = Employee::all();
         return \response()->json(
             [
                 'status' => 200,
-                'message' => 'entreprises successfully listed',
-                'entreprises' => $entreprises
+                'message' => 'employees successfully listed',
+                'employees' => $employees
             ]
         );
     }
@@ -41,14 +31,14 @@ class EntrepriseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateOrUpdateEntreprise $request)
+    public function store(CreateOrUpdateEmployee $request)
     {
-        if ($entreprise = Entreprise::create($request->only(['name', 'email', 'webSite']))) {
+        if ($employee = Employee::create($request->all())) {
             return \response()->json(
                 [
                     'status' => 201,
-                    'message' => 'entreprise successfully listed',
-                    'entreprise' => $entreprise
+                    'message' => 'employee successfully created',
+                    'employee' => $employee
                 ]
             );
         } else {
@@ -65,17 +55,17 @@ class EntrepriseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Entreprise $entreprise
+     * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateOrUpdateEntreprise $request, Entreprise $entreprise)
+    public function update(CreateOrUpdateEmployee $request, Employee $employee)
     {
-        if ($entreprise->update($request->only(['name', 'email', 'webSite']))) {
+        if ($employee->update($request->all())) {
             return \response()->json(
                 [
                     'status' => 200,
-                    'message' => 'entreprise successfully updated',
-                    'entreprise' => $entreprise
+                    'message' => 'employee successfully updated',
+                    'employee' => $employee
                 ]
             );
         } else {
@@ -91,16 +81,17 @@ class EntrepriseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Entreprise $entreprise)
+    public function destroy(Employee $employee)
     {
-        if ($entreprise->delete()) {
+        if ($employee->delete()) {
             return \response()->json(
                 [
                     'status' => 200,
-                    'message' => 'entreprise successfully deleted',
+                    'message' => 'employee successfully deleted',
+
                 ]
             );
         } else {
